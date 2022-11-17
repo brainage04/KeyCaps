@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+var title = "Home | BrainSpace";
+
+router.get('/', function (request, response) {
+	response.render('index', { title });
 });
 
 module.exports = router;

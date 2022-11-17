@@ -3,9 +3,23 @@
 <head>
 	<title><%= title %></title>
 	<link rel='stylesheet' href='/stylesheets/index.css' />
+	<script src='/javascripts/index.js' defer></script>
 </head>
 <body>
-	<h1><%= title %></h1>
-	<p>Welcome to <%= title %></p>
+	<nav class="navFooter">
+		<a href="/">Home</a>
+		<a href="/login">Login</a>
+		<a href="/register">Register</a>
+		<a href="/about">About</a>
+		<a href="/products">Products</a>
+		<a href="/services">Services</a>
+	</nav>
+	<main>
+		<h1><%= title %></h1>
+		<p>Welcome to <%= title %></p>
+	</main>
+	<footer class="navFooter">
+		<a>Copyright &copy; <span id="copyrightYear"></span></a>
+	</footer>
 </body>
 </html>

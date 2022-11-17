@@ -1,0 +1,45 @@
+:root {
+	--default-padding: 1rem;
+	--font-color: white;
+	--background-color-lighter: hsl(0, 0%, 15%);
+	--background-color: hsl(0, 0%, 10%);
+	--background-color-darker: hsl(0, 0%, 5%);
+}
+
+* {
+	margin: 0px;
+	padding: 0px;
+	font-family: monospace;
+	color: var(--font-color);
+	background-color: var(--background-color-darker);
+}
+
+body {
+	display: grid;
+	grid-template-rows: auto 1fr auto;
+	min-height: 100vh;
+}
+
+main {
+	padding: var(--default-padding);
+}
+
+.navFooter {
+	display: flex;
+	background-color: var(--background-color);
+}
+
+.navFooter > * {
+	padding: var(--default-padding);
+	background-color: var(--background-color);
+}
+
+.navFooter > *:hover, .navFooter > *:hover * {
+	text-decoration: underline;
+	background-color: var(--background-color-lighter);
+}
+
+.navFooter * {
+	text-decoration: none;
+	background-color: var(--background-color);
+}
