@@ -58,3 +58,12 @@ form {
 form > * {
 	margin: var(--default-padding-half);
 }
+
+form > div {
+	display: flex;
+	justify-content: space-between;
+}
+
+.lastChild {
+	margin-left: auto;
+}

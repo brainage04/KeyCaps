@@ -1,8 +1,13 @@
 <nav class="navFooter">
 	<a href="/">Home</a>
-	<a href="/login">Login</a>
-	<a href="/register">Register</a>
 	<a href="/about">About</a>
 	<a href="/products">Products</a>
 	<a href="/services">Services</a>
+	<% if (session.loggedin) { %>
+		<a href="/logout">Logout</a>
+		<a href="/" class="lastChild"><%= session.username %></a>
+	<% } else { %>
+		<a href="/login">Login</a>
+		<a href="/register">Register</a>
+	<% } %>
 </nav>

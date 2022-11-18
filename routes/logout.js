@@ -1,11 +1,14 @@
 var express = require('express');
 var router = express.Router();
 
-var title = "Home";
-
 router.get('/', function (request, response) {
 	session = request.session;
-	response.render('home', { session, title });
+	if (session.loggedin) {
+		session.destroy();
+		response.redirect('/');
+	} else {
+		response.send('You are already logged out.');
+	}
 });
 
 module.exports = router;

@@ -1,14 +1,14 @@
 var express = require('express');
 var router = express.Router();
 
-var title = "Login";
+var title = "Register";
 
 router.get('/', function (request, response) {
 	session = request.session;
 	if (session.loggedin) {
-		response.send('You are already logged in.');
+		response.send('Please log out to register another account.');
 	} else {
-		response.render('login', { session, title });
+		response.render('register', { session, title });
 	}
 });
 
