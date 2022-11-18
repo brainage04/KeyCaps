@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+	<%- include("./partials/head") %>
+	<body>
+		<%- include("./partials/nav") %>
+		<main>
+			<h1><%= title %></h1>
+			<p>Welcome to BrainSpace's <%= title %> page!</p>
+			<form action="/auth/verifying-email-address" method="post">
+				<label for="verificationToken">Verification Token</label>
+				<input type="password" id="verificationToken" name="verificationToken" maxlength="255" required>
+				<input type="submit" value="Submit">
+			</form>
+		</main>
+		<%- include("./partials/footer") %>
+	</body>
+</html>

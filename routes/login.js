@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
-var title = "Login";
-
 router.get("/", function (request, response) {
-	session = request.session;
+	const session = request.session;
+	const title = "Login";
+	
 	if (session.loggedin) {
 		response.send("You are already logged in.");
 	} else {

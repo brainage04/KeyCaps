@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
-var title = "Home";
-
 router.get("/", function (request, response) {
-	session = request.session;
+	const session = request.session;
+	const title = "Home";
+	
 	response.render("home", { session, title });
 });
 
