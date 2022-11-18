@@ -21,3 +21,5 @@ CREATE TABLE IF NOT EXISTS `admins` (
 );
 
 SELECT * FROM `users`;
+
+# UPDATE `users` SET `email_verified` = TRUE WHERE id = 1;

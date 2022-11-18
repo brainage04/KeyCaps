@@ -148,7 +148,7 @@ router.post("/verifying-email-address", function(request, response) {
 						response.redirect("/"); // Internal Server Error - redirect to home page
 						return; // return so code stops running before it encounters another redirect and throws an error
 					}
-				}); // verify email address
+				}); // verify email address - for some reason this doesn't work here but it works in the workbench
 
 				response.redirect("/"); // OK (logged in successfully) - redirect to home page
 			} else {
