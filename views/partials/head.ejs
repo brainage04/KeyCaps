@@ -1,8 +1,13 @@
 <head>
-	<title><%= title %> | BrainSpace</title>
-	<link rel='stylesheet' href='/stylesheets/index.css' />
-	<script src='/javascripts/index.js' defer></script>
-	<% if (title === "Login" || title === "Register") { %>
-		<script src='/javascripts/login_register.js' defer></script>
+	<link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+	<link rel="stylesheet" href="/stylesheets/index.css" />
+	<% if (typeof title !== undefined) { %>
+		<title><%= title %> | BrainSpace</title>
+	<% } else { %>
+		<title>Unknown Page | BrainSpace</title>
 	<% } %>
+	<% if (title === "Login" || title === "Register") { %>
+		<script src="/javascripts/login_register.js" defer></script>
+	<% } %>
+	<script src="/javascripts/index.js" defer></script>
 </head>

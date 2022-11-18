@@ -1,14 +1,14 @@
-var express = require('express');
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
 
 var title = "Register";
 
-router.get('/', function (request, response) {
+router.get("/", function (request, response) {
 	session = request.session;
 	if (session.loggedin) {
-		response.send('Please log out to register another account.');
+		response.send("Please log out to register another account.");
 	} else {
-		response.render('register', { session, title });
+		response.render("register", { session, title });
 	}
 });
 

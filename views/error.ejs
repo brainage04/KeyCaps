@@ -1,3 +1,18 @@
-<h1><%= message %></h1>
-<h2><%= error.status %></h2>
-<pre><%= error.stack %></pre>
+<%
+	const title = "Error";
+%>
+<!DOCTYPE html>
+<html lang="en">
+	<%- include("./partials/head") %>
+	<body>
+		<%- include("./partials/nav") %>
+		<main>
+			<h1><%= title %>: <%= message %></h1>
+			<% if (typeof error !== "undefined") { %>
+				<h2><%= error.status %></h2>
+				<pre><%= error.stack %></pre>
+			<% } %>
+		</main>
+		<%- include("./partials/footer") %>
+	</body>
+</html>

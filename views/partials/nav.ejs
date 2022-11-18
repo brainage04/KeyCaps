@@ -1,8 +1,5 @@
 <nav class="navFooter">
 	<a href="/">Home</a>
-	<a href="/about">About</a>
-	<a href="/products">Products</a>
-	<a href="/services">Services</a>
 	<% if (session.loggedin) { %>
 		<a href="/logout">Logout</a>
 		<a href="/" class="lastChild"><%= session.username %></a>
