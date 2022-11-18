@@ -1,11 +1,11 @@
+const dotenv = require("dotenv");
+dotenv.config();
+
 const path = require("path");
 const createError = require("http-errors");
 const express = require("express");
 const session = require("express-session");
 const logger = require("morgan");
-// const cookieParser = require("cookie-parser");
-
-const config = require("./config.json");
 
 const homeRouter = require("./routes/home");
 const loginRouter = require("./routes/login");
@@ -19,10 +19,9 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs"); // view engine setup
 
 app.use(logger("dev"));
-// app.use(cookieParser());
 
 var sessionObject = {
-	secret: config.SessionObjectSecret,
+	secret: process.env.SessionObjectSecret,
 	resave: false,
   	saveUninitialized: true,
 	cookie: {}

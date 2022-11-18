@@ -1,10 +1,12 @@
+const dotenv = require("dotenv");
+dotenv.config();
+
 const mysql = require("mysql");
-const config = require("./config.json");
 
 const connection = mysql.createConnection({
 	host     : "localhost",
 	user     : "root",
-	password : config.MySQLPassword,
+	password : process.env.MySQLPassword,
 	database : "brainspace"
 });
 

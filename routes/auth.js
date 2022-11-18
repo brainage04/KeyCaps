@@ -69,7 +69,7 @@ router.post("/register", function(request, response) {
 					response.redirect("/"); // Internal Server Error - redirect to home page
 					return; // return so code stops running before it encounters another redirect and throws an error
 				} else if (results.length == 0) { // If the account does not exist
-					var hash = bcrypt.hash(password, 10, function (err, hash) {
+					bcrypt.hash(password, 10, function (err, hash) {
 						if (err) { // If there is an issue with the query, output the error
 							console.log(err);
 							response.redirect("/"); // Internal Server Error - redirect to home page
