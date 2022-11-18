@@ -8,7 +8,9 @@ const cookieParser = require('cookie-parser');
 
 const config = require('./config.json');
 
-const indexRouter = require('./routes/index');
+const homeRouter = require('./routes/home');
+const loginRouter = require('./routes/login');
+const authRouter = require('./routes/auth');
 
 var app = express();
 
@@ -27,7 +29,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'static')));
 
-app.use('/', indexRouter);
+app.use('/', homeRouter);
+app.use('/login', loginRouter);
+app.use('/auth', authRouter);
 
 // catch 404 and forward to error handler
 app.use(function (request, response, next) {
@@ -52,4 +56,4 @@ const connection = mysql.createConnection({
 	database : 'brainspace'
 });
 
-module.exports = app;
+module.exports = app, connection;

@@ -4,6 +4,10 @@ var connection = require('../app');
 
 var title = "Auth | BrainSpace";
 
+router.get('/auth', function (request, response) {
+	response.redirect('/');
+});
+
 router.post('/auth', function(request, response) {
 	// Capture the input fields
 	let username = request.body.username;

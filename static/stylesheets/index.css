@@ -1,5 +1,6 @@
 :root {
 	--default-padding: 1rem;
+	--default-padding-half: calc(var(--default-padding) / 2);
 	--font-color: white;
 	--background-color-lighter: hsl(0, 0%, 15%);
 	--background-color: hsl(0, 0%, 10%);
@@ -22,6 +23,10 @@ body {
 
 main {
 	padding: var(--default-padding);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
 .navFooter {
@@ -34,7 +39,7 @@ main {
 	background-color: var(--background-color);
 }
 
-.navFooter > *:hover, .navFooter > *:hover * {
+.navFooter > *:hover, .navFooter > *:hover *, .navFooter > *:focus, .navFooter > *:focus * {
 	text-decoration: underline;
 	background-color: var(--background-color-lighter);
 }
@@ -42,4 +47,14 @@ main {
 .navFooter * {
 	text-decoration: none;
 	background-color: var(--background-color);
+}
+
+form {
+	padding: var(--default-padding-half);
+	display: flex;
+	flex-direction: column;
+}
+
+form > * {
+	margin: var(--default-padding-half);
 }
