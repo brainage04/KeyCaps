@@ -1,3 +1,3 @@
+var copyrightYear = document.getElementById("copyrightYear");
 var currentYear = new Date().getUTCFullYear();
-
-document.getElementById("copyrightYear").innerHTML = currentYear;
+copyrightYear.innerHTML = currentYear;
