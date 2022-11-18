@@ -1,3 +1,6 @@
+var showPassword = document.getElementById("showPassword");
+showPassword.checked = false;
+
 var password = document.getElementById("password");
 
 function togglePassword() {
