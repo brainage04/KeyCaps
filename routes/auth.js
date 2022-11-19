@@ -128,7 +128,11 @@ router.get("/verify-email-address", function(request, response) {
 	const session = request.session;
 	const title = "Verify Email Address";
 
-	response.render("verify-email-address", { session, title });
+	if (session.loggedin) { // If user is logged in
+		response.redirect("/"); // Forbidden (you cannot be logged in with an unverified account) - redirect to home page
+	} else {
+		response.render("verify-email-address", { session, title });
+	}
 });
 
 router.post("/verifying-email-address", function(request, response) {
