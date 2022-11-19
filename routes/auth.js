@@ -6,7 +6,7 @@ const crypto = require('crypto');
 const sendMail = require('../email/gmail');
 
 router.get("/", function (request, response) {
-	response.redirect(403, "/"); // Forbidden (GET requests forbidden) - redirect to home page
+	response.redirect("/"); // Forbidden (GET requests forbidden) - redirect to home page
 });
 
 router.post("/login", function(request, response) {
@@ -62,6 +62,8 @@ router.post("/register", function(request, response) {
 		const username = request.body.username;
 		const password = request.body.password;
 		const emailAddress = request.body.emailAddress; // Capture the input fields
+
+		session.emailAddress = request.body.emailAddress; // This will be required when verifying email address
 	
 		if (username && password && emailAddress) { // Ensure the input fields exists and are not empty
 			connection.query("SELECT id FROM users WHERE username = ? OR email_address = ?", [username, emailAddress], function(err, results) { // Execute SQL query that"ll select the account from the database based on the specified username and email address
@@ -76,31 +78,38 @@ router.post("/register", function(request, response) {
 							response.redirect("/"); // Internal Server Error - redirect to home page
 							return; // return so code stops running before it encounters another redirect and throws an error
 						} else {
-							const verificationCode = crypto
-								.createHash("sha256")
-								.update(username + hash + emailAddress)
-								.digest("hex");
-
-							connection.query("INSERT INTO users (username, password, email_address, verification_token) VALUES (?, ?, ?, ?)", [username, hash, emailAddress, verificationCode], function(err) { // Create user
+							crypto.randomBytes(4, function (err, buf) {
 								if (err) { // If there is an issue with the query, output the error
 									console.log(err);
 									response.redirect("/"); // Internal Server Error - redirect to home page
 									return; // return so code stops running before it encounters another redirect and throws an error
 								} else {
-									const emailVerification = async () => {
-										return await sendMail({
-											to: emailAddress,
-											subject: 'Keycaps - Email Address Verification',
-											text: `Your verification code is: ${verificationCode}`,
-											textEncoding: 'base64'
-										});
-									};
+									const dateCreated = Date.now(); // account created now
+									const emailVerificationToken = buf.readUInt32BE() % 100000000; // get least significant 8 digits
+									const emailVerificationTokenExpiration = dateCreated + 3600000; // token expires in 1 hour
 
-									emailVerification()
-										.then((messageId) => console.log('Message sent successfully:', messageId))
-										.catch((err) => console.log(err));
-
-									response.redirect("/auth/verify-email-address"); // Redirect to confirmation page to verify email address
+									connection.query("INSERT INTO users (date_created, username, password, email_address, email_verification_token, email_verification_token_expiration) VALUES (?, ?, ?, ?, ?, ?)", [dateCreated, username, hash, emailAddress, emailVerificationToken, emailVerificationTokenExpiration], function(err) { // Create user
+										if (err) { // If there is an issue with the query, output the error
+											console.log(err);
+											response.redirect("/"); // Internal Server Error - redirect to home page
+											return; // return so code stops running before it encounters another redirect and throws an error
+										} else {
+											const emailVerification = async () => {
+												return await sendMail({
+													to: emailAddress,
+													subject: 'KeyCaps - Email Address Verification',
+													text: `Your verification code is: ${emailVerificationToken}`,
+													textEncoding: 'base64'
+												});
+											};
+		
+											emailVerification()
+												.then((messageId) => console.log('Email sent successfully:', messageId))
+												.catch((err) => console.log(err));
+		
+											response.redirect("/auth/verify-email-address"); // Redirect to confirmation page to verify email address
+										}
+									});
 								}
 							});
 						}
@@ -129,9 +138,10 @@ router.post("/verifying-email-address", function(request, response) {
 		response.redirect("/"); // Forbidden (user must logout to register another account) - redirect to home page
 		return; // return so code stops running before it encounters another redirect and throws an error
 	} else {
-		const verificationToken = request.body.verificationToken; // Capture the input fields
+		const emailVerificationToken = request.body.emailVerificationToken; // Capture the input fields
+		const currentDate = Date.now();
 
-		connection.query("SELECT * FROM users WHERE verification_token = ?", [verificationToken], function(err, results) {
+		connection.query("SELECT id, username FROM users WHERE email_address = ? AND email_verification_token = ? AND email_verification_token_expiration > ?", [session.emailAddress, emailVerificationToken, currentDate], function(err, results) { // check that verification token exists in database and belongs to correct email address
 			if (err) { // If there is an issue with the query, output the error
 				console.log(err);
 				response.redirect("/"); // Internal Server Error - redirect to home page
@@ -140,9 +150,10 @@ router.post("/verifying-email-address", function(request, response) {
 				session.loggedin = true;
 				session.id = results[0].id;
 				session.username = results[0].username;
-				session.emailAddress = results[0].emailAddress; // Authenticate the user
+				session.emailAddress = session.emailAddress;
+				session.emailVerified = true; // Authenticate the user
 
-				connection.query("UPDATE users SET email_verified = TRUE WHERE id = ?", [results[0].id], function(err) {
+				connection.query("UPDATE users SET email_verification_token_expiration = ?, email_verified = TRUE WHERE email_address = ?", [currentDate, session.emailAddress], function(err) {
 					if (err) { // If there is an issue with the query, output the error
 						console.log(err);
 						response.redirect("/"); // Internal Server Error - redirect to home page
@@ -152,7 +163,7 @@ router.post("/verifying-email-address", function(request, response) {
 
 				response.redirect("/"); // OK (logged in successfully) - redirect to home page
 			} else {
-				response.send("Username and/or email address does not exist, or the user has already verified their email address.");
+				response.send("Username and/or email address does not exist, email verification token is incorrect/has expired, or the user has already verified their email address.");
 			}
 		});
 	}

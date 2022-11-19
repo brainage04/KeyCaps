@@ -7,7 +7,7 @@ const connection = mysql.createConnection({
 	host     : "localhost",
 	user     : "root",
 	password : process.env.MySQLPassword,
-	database : "brainspace"
+	database : "keycaps"
 });
 
 connection.connect(function(err) {
@@ -15,7 +15,7 @@ connection.connect(function(err) {
 		console.log(err);
 		return;
 	} else {
-		console.log("Connected to MySQL Database (BrainSpace)");
+		console.log("Connected to MySQL Database (KeyCaps)");
 	}
 });
 
