@@ -1,2 +1,2 @@
 # Run The App
-Run "SET DEBUG=brainspace:* & npm start" in Command Prompt
+Run "SET DEBUG=KeyCaps:* & npm start" in Command Prompt
